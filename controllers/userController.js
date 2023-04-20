@@ -19,10 +19,14 @@ const signup = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res) => { 
+  
   try {
+    const messages = await Messages.find();
+    console.log('messages from mongodb', messages);
     const { email, password } = req.body;
     const user = await User.findByCredentials(email, password);
+    user.status = 'online'
     await user.save();
     res.status(200).json(user);
   } catch (error) {
